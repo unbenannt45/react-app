@@ -2,14 +2,21 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Footer from "./components/Footer";
-import Heder from "./components/Heder";
-import './style/style.css'
+import Heder from "./components/Heder"
+import { useDispatch, useSelector } from "react-redux";
+
 
 function Main() {
   // отвечает за состояние стейта в компоненте
   const [appState, setAppState] = useState();
   const [meaning, setMeaning] = useState(5);
   const [length, setLength] = useState(5);
+
+  const state = useSelector((state) => state);
+
+  useEffect(() => {
+    console.log('state', state.meaning.initialMeaning)
+  }, [state])
 
   function hendleChange(event) {
     setMeaning(Number(event.target.value));
