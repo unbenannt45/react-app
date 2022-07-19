@@ -2,34 +2,22 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Footer from "./components/Footer";
-import Heder from "./components/Heder"
-import { useDispatch, useSelector } from "react-redux";
+import Heder from "./components/Heder";
+import { useSelector } from "react-redux";
 
 
 function Main() {
-  // отвечает за состояние стейта в компоненте
-  const [appState, setAppState] = useState();
-  const [meaning, setMeaning] = useState(5);
-  const [length, setLength] = useState(5);
-
   const state = useSelector((state) => state);
-
-  useEffect(() => {
-    console.log('state', state.meaning.initialMeaning)
-  }, [state])
-
-  function hendleChange(event) {
-    setMeaning(Number(event.target.value));
-  }
-
-  function Click() {
-    setLength(length + meaning);
-  }
-
+  const [appState, setAppState] = useState();
+  const search = state.searchProducts.search
   //useEffect будет следить за изменениями setAppState и производить рендинг если это необходимо
   useEffect(() => {
-    const apiUrl = `https://dummyjson.com/products?limit=${length}`;
+    const apiUrl = `https://dummyjson.com/products/search?select=title&q=${state.searchProducts.search}`;
+    //`https://dummyjson.com/products/search?select=title&q=${phone}&limit=${state.meaning.length}`
+    console.log(appState)
+    
 
+    
     axios
       .get(apiUrl)
 
@@ -41,7 +29,11 @@ function Main() {
       .catch((err) => {
         console.log(err);
       });
-  }, [length]);
+  }, [state.meaning.length]);
+
+  useEffect(()=> {
+    console.log('поле поиска', search)
+  },[search])
 
   return (
     <div className="main-container">
@@ -76,31 +68,6 @@ function Main() {
                 )}
             </tbody>
           </table>
-        </div>
-
-        <div>
-          <div className="footer">
-            <p className="footer__loading">
-              Загружено {length} из {length}
-            </p>
-            <button className="footer__button" onClick={Click}>
-              Показать еще
-            </button>
-            <div className="footer__select">
-              <p className="footer__display_loading">Показать по </p>
-              <select
-                value={meaning}
-                onChange={hendleChange}
-                className="footer__style_select"
-              >
-                <option value="1">1</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-              </select>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />
