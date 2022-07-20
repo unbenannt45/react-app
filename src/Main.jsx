@@ -4,20 +4,19 @@ import { useState, useEffect } from "react";
 import Footer from "./components/Footer";
 import Heder from "./components/Heder";
 import { useSelector } from "react-redux";
-
+import { setLengthSearch } from "./features/stateSearch/searchSlice";
+import { useDispatch } from "react-redux";
 
 function Main() {
   const state = useSelector((state) => state);
-  const [appState, setAppState] = useState();
-  const search = state.searchProducts.search
+  const [appState, setAppState] = useState([]); // [] добавлены, так как в начале загрузки appState = undefined и происходит ошибка
+
+  const dispatch = useDispatch([]);
+
   //useEffect будет следить за изменениями setAppState и производить рендинг если это необходимо
   useEffect(() => {
-    const apiUrl = `https://dummyjson.com/products/search?select=title&q=${state.searchProducts.search}`;
-    //`https://dummyjson.com/products/search?select=title&q=${phone}&limit=${state.meaning.length}`
-    console.log(appState)
-    
+    const apiUrl = `https://dummyjson.com/products/search?select=title,prise&q=${state.searchProducts.search}&limit=${state.meaning.length}`;
 
-    
     axios
       .get(apiUrl)
 
@@ -31,9 +30,7 @@ function Main() {
       });
   }, [state.meaning.length]);
 
-  useEffect(()=> {
-    console.log('поле поиска', search)
-  },[search])
+  dispatch(setLengthSearch(appState.length));
 
   return (
     <div className="main-container">

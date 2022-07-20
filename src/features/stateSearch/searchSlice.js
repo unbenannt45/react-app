@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialSearch = {
-  search: "",
+  search: "", // строка поиска 
+  lengthSearch: 0, // длина массива поиска 
 };
 
 const searchSlice = createSlice({
@@ -11,8 +12,11 @@ const searchSlice = createSlice({
     setInitialSearch: (state, action) => {
       state.search = action.payload;
     },
+    setLengthSearch: (state, action) => {
+      state.lengthSearch = action.payload;
+    },
   },
 });
 
-export const { setInitialSearch } = searchSlice.actions;
+export const { setInitialSearch, setLengthSearch } = searchSlice.actions;
 export default searchSlice.reducer;
